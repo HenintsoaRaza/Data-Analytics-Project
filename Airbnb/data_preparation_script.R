@@ -2,6 +2,7 @@ library(dplyr)
 library(stringr)
 library(ggplot2)
 library(data.table)
+library(plotly)
 
 #setwd("~/Dropbox/Data Analytics ECE/Airbnb")
 
@@ -214,17 +215,40 @@ avgRev30_city_roomType + geom_boxplot(aes(colour = room_type),  lwd = 0.8, posit
 # Analysis 2 : 
 # What is the proportion of each room type?
 proportion_RoomType <- ggplot(listings, aes(room_type))
-proportion_RoomType + geom_bar() +
-    geom_text(aes(label=stat(count)), stat='count', nudge_y=0.125, va='bottom')
+proportion_RoomType + geom_bar(color="blue", width=0.8 , fill="darkgreen") +
+    geom_text(aes(label=stat(count)), stat='count', vjust = -0.3) + 
+    ylab("Percentage") 
 
+proportion_RoomType2<- ggplot(listings, aes(room_type))
+proportion_RoomType2 + 
+    geom_bar(aes(y = (..count..)/sum(..count..), fill=factor(..x..)), stat= "count")+
+    geom_text(aes(label = scales::percent(round((..count..)/sum(..count..),4)),
+                  y= ((..count..)/sum(..count..))), stat="count",
+              vjust = -.25) + theme(legend.position = "none")
+
+   # ylab("Percentage ") + scale_fill_discrete(name = "room_type")
 
 
 # What is the proportion of each house size (# of bedroom)?
-
+proportion_bedrooms<- ggplot(listings, aes(bedrooms))
+proportion_bedrooms + 
+    geom_bar(aes(y = (..count..)/sum(..count..), fill=factor(..x..)), stat= "count")+
+    geom_text(aes(label = scales::percent(round((..count..)/sum(..count..),4)),
+                  y= ((..count..)/sum(..count..))), stat="count",
+              vjust = -.25) + 
+    ylab("Percentage ") + theme(legend.position = "none")
 
 
 # What is the proportion of each neighborhood?
-
+proportion_neighborhood<- ggplot(listings, aes(neighbourhood_cleansed))
+proportion_neighborhood + 
+    geom_bar(aes(y = (..count..)/sum(..count..), fill=factor(..x..)), stat= "count")+
+    geom_text(aes(label = scales::percent(round((..count..)/sum(..count..),2)),
+                  y= ((..count..)/sum(..count..))), stat="count",
+              vjust = -.25) + 
+    
+    #scale_y_discrete(guide = guide_axis(check.overlap = TRUE))+
+    ylab("Percentage ") + theme(legend.position = "none") + coord_flip()
 
 
 # What is the average availability over the next 30 days for each room type /
