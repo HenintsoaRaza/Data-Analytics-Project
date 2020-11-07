@@ -1,0 +1,3 @@
+"0","distRev30_city_bedrooms <- ggplot(listings, aes(revenue_30, fill = bedrooms))"
+"0",""
+"0","distRev30_city_bedrooms + geom_histogram(binwidth=.5, alpha=.5, position=""identity"") + facet_wrap(~ city) "
