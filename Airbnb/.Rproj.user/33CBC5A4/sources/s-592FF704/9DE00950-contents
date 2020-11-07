@@ -1,0 +1,34 @@
+---
+title: "Airbnb data analysis"
+authors: "RAZAFINDRAZAKA Henintsoa, WANG James"
+date: "November 7, 2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Data Preprocessing
+
+For the preprocessing, we use the preprocessing script. We run this script with source().
+
+```{r}
+source("data_preparation_script.R", local = knitr::knit_global())
+
+```
+
+
+```{r listings}
+head(listings)
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
