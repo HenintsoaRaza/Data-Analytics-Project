@@ -1,0 +1,7 @@
+"0",""
+"0","top_10_neighborhood <- listings %>%"
+"0","  group_by(city) %>%"
+"0","  count(neighbourhood_cleansed) %>%"
+"0","  arrange(city, desc(n))"
+"0",""
+"0","top_10_neighborhood"

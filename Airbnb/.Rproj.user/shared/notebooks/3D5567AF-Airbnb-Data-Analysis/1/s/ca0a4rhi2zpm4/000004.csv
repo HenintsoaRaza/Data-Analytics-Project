@@ -1,0 +1,5 @@
+"0","listings %>%"
+"0","  group_by(city) %>%"
+"0","  summarise(Mean_revenue_30 = mean(revenue_30))"
+"2","`summarise()` ungrouping output (override with `.groups` argument)
+"

@@ -1,0 +1,4 @@
+"0","avgRev30 <- ggplot(listings, aes(city, revenue_30, fill=city))"
+"0","avgRev30 + geom_boxplot(aes(colour = ""red""),  outlier.shape = NA) +"
+"0","  scale_y_continuous(limits = quantile(listings$revenue_30, c(0.1, 0.9), na.rm = T)) +"
+"0","  scale_fill_brewer(palette=""Set1"") "

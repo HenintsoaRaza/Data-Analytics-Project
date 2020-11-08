@@ -3,23 +3,23 @@
     "path": "C:/Users/James/Desktop/8/ING5/data ana/Airbnb/Airbnb-Data-Analysis.Rmd",
     "project_path": "Airbnb-Data-Analysis.Rmd",
     "type": "r_markdown",
-    "hash": "483850973",
+    "hash": "2429477646",
     "contents": "",
     "dirty": false,
     "created": 1604772715470.0,
     "source_on_save": false,
     "relative_order": 2,
     "properties": {
-        "last_setup_crc32": "592FF704bb338d19",
-        "cursorPosition": "128,20",
-        "scrollLine": "125"
+        "last_setup_crc32": "82D77B99bb338d19",
+        "cursorPosition": "233,0",
+        "scrollLine": "224"
     },
     "folds": "",
-    "lastKnownWriteTime": 1604772883,
+    "lastKnownWriteTime": 1604858225,
     "encoding": "UTF-8",
     "collab_server": "",
     "source_window": "",
-    "last_content_update": 1604772883821,
+    "last_content_update": 1604858225322,
     "read_only": false,
     "read_only_alternatives": []
 }
