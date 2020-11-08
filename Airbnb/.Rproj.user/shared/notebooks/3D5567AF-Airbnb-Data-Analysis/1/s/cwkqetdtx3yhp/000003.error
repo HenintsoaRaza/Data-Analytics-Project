@@ -1,0 +1,1 @@
+{"frames":[],"message":"Error in ggplot(listings[listings$city == c & !is.na(listings$bedrooms),  : \n  impossible de trouver la fonction \"ggplot\"\n"}
