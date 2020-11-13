@@ -1,3 +1,0 @@
-"0","distRev30_city_roomType <- ggplot(listings, aes(revenue_30, group = room_type, fill = room_type))"
-"0",""
-"0","distRev30_city_roomType + geom_density(adjust=1.5, alpha=.4) + facet_wrap(~ city)"

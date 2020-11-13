@@ -1,4 +1,0 @@
-"0","proportion_RoomType <- ggplot(listings, aes(room_type))"
-"0","proportion_RoomType + geom_bar(color=""blue"", width=0.8 , fill=""darkgreen"") +"
-"0","  geom_text(aes(label=stat(count)), stat='count', vjust = -0.3) + "
-"0","  ylab(""Percentage"") "

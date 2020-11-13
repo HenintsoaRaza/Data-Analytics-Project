@@ -3,7 +3,7 @@ library(stringr)
 library(ggplot2)
 library(data.table)
 
-setwd("~/Dropbox/Data Analytics ECE/Airbnb")
+#setwd("~/Dropbox/Data Analytics ECE/Airbnb")
 
 # a generic function to prepare data for a specific city, data_date
 prepare_data <- function(city, data_date)
@@ -11,9 +11,12 @@ prepare_data <- function(city, data_date)
     # Cleaning listings dataframe
     
     # suppose raw data is stored in data_raw/city/data_date/listings.csv.gz
-    listings_url <- file.path("data_raw", city, data_date, "listings.csv.gz")
+    #listings_url <- file.path("data_raw", city, data_date, "listings.csv.gz")
     # suppose raw data is stored in data_raw/city/data_date/calendar.csv.gz
-    calendar_url <- file.path("data_raw", city, data_date, "calendar.csv.gz")
+    #calendar_url <- file.path("data_raw", city, data_date, "calendar.csv.gz")
+    
+    listings_url <- file.path("data_raw",city,  "listings.csv.gz")
+    calendar_url <- file.path("data_raw",city,  "calendar.csv.gz")
     
     print(paste0("reading data from ", listings_url))
     listings <- read.csv(gzfile(listings_url))
@@ -150,14 +153,4 @@ listings <-
 ## Preprocess
 listings$bedrooms <- ifelse(listings$bedrooms >= 5, "5+", listings$bedrooms)
 
-
-# Analysis 1
-## Comparing the distribution of estimated revenue for the next 30 days of listings
-## per each city.
-p <- ggplot(listings, aes(city, revenue_30))
-p + geom_boxplot(aes(colour = "red"), outlier.shape = NA) +
-    scale_y_continuous(limits = quantile(listings$revenue_30, c(0.1, 0.9), na.rm = T))
-
-# for this I chose to plot a boxplot to show the distribution
-# I could've used other types of plots! Be creative!
 

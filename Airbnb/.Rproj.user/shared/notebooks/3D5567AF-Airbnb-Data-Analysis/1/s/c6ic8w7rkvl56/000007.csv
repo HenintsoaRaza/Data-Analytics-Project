@@ -1,6 +1,0 @@
-"0","proportion_RoomType2<- ggplot(listings, aes(room_type, fill= city))"
-"0","proportion_RoomType2 + "
-"0","  geom_bar(aes(y = (..count..)/sum(..count..), fill=factor(..x..)), stat= ""count"")+"
-"0","  geom_text(aes(label = scales::percent(round((..count..)/sum(..count..),4)),"
-"0","                y= ((..count..)/sum(..count..))), stat=""count"","
-"0","            vjust = -.25) + theme(legend.position = ""none"") + facet_wrap(~ city) + theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))"

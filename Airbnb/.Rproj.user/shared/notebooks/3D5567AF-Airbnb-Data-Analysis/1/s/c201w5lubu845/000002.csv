@@ -1,9 +1,0 @@
-"0","Revenue30_top_10_neighborhood <- listings %>%"
-"0","  group_by(city, neighbourhood_cleansed) %>%"
-"0","  summarise(sum_revenue30 = sum(revenue_30)) %>%"
-"0","  top_n(10)"
-"2","`summarise()` regrouping output by 'city' (override with `.groups` argument)
-"
-"2","Selecting by sum_revenue30
-"
-"0","Revenue30_top_10_neighborhood"

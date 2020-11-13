@@ -1,5 +1,0 @@
-"0","listings %>%"
-"0","  group_by(city, room_type, bedrooms, neighbourhood_cleansed) %>%"
-"0","  summarise(average_availability_30 = mean(availability_30))"
-"2","`summarise()` regrouping output by 'city', 'room_type', 'bedrooms' (override with `.groups` argument)
-"

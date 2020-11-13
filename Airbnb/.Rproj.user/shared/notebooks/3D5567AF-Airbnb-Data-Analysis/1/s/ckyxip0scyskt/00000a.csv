@@ -1,4 +1,0 @@
-"0","proportion_10neighborhood<- ggplot(top_10_neighborhood, aes(city, fill= city))"
-"0","proportion_10neighborhood + "
-"0","  geom_bar(aes(x = neighbourhood_cleansed, y = n), stat=""identity"",  lwd = 0.8, position = position_dodge(0.9), na.rm = T) +"
-"0","  theme(legend.position = ""none"") + coord_flip() + facet_wrap(~ city) + xlab(""neighborhood "") + ylab(""proportion"") "
