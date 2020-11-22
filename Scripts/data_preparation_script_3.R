@@ -92,12 +92,18 @@ load_data_from_url <- function(listings_url){
             
             df <- df_list %>% 
                 select(columns_listings) %>%
+                
+                ## clean price column and transform to numeric
+                mutate(price = str_replace(price, "\\$", "")) %>%
+                mutate(price = str_replace(price, ",", "")) %>%
+                mutate(price = as.numeric(price))  %>%
+                
                 mutate(id = strtoi(id)) %>% 
                 left_join(df_cal, by = c("id" = "listing_id"))
             
             dir.create(file.path("App","data_cleansed3", country, city, data_date), recursive = TRUE)
             
-            write.csv(df, file.path("App","data_cleansed3", country, city, data_date, "listings.csv"))
+            write.csv(df, file.path("App","data_cleansed3", country, city, data_date, "listings.csv"), row.names=FALSE)
             print(paste0("saving data into ", file.path("App", "data_cleansed3", country, city, data_date, "listings.csv")))
             
             print(Sys.time() - start_time)
@@ -152,7 +158,7 @@ load_data_from_url <- function(listings_url){
         
         dir.create(file.path("App","data_cleansed3", country, city, data_date), recursive = TRUE)
         
-        write.csv(df, file.path("App","data_cleansed3", country, city, data_date, "listings.csv"))
+        write.csv(df, file.path("App","data_cleansed3", country, city, data_date, "listings.csv"), row.names=FALSE)
         print(paste0("saving data into ", file.path("App", "data_cleansed3", country, city, data_date, "listings.csv")))
         
         print(Sys.time() - start_time)
