@@ -101,10 +101,10 @@ load_data_from_url <- function(listings_url){
                 mutate(id = strtoi(id)) %>% 
                 left_join(df_cal, by = c("id" = "listing_id"))
             
-            dir.create(file.path("App","data_cleansed3", country, city, data_date), recursive = TRUE)
+            dir.create(file.path("App","data_cleansed", country, city, data_date), recursive = TRUE)
             
-            write.csv(df, file.path("App","data_cleansed3", country, city, data_date, "listings.csv"), row.names=FALSE)
-            print(paste0("saving data into ", file.path("App", "data_cleansed3", country, city, data_date, "listings.csv")))
+            write.csv(df, file.path("App","data_cleansed", country, city, data_date, "listings.csv"), row.names=FALSE)
+            print(paste0("saving data into ", file.path("App", "data_cleansed", country, city, data_date, "listings.csv")))
             
             print(Sys.time() - start_time)
             
@@ -156,10 +156,10 @@ load_data_from_url <- function(listings_url){
         df <- df %>%
             select(c(columns_listings,"availability_30","price_30","revenue_30") )
         
-        dir.create(file.path("App","data_cleansed3", country, city, data_date), recursive = TRUE)
+        dir.create(file.path("App","data_cleansed", country, city, data_date), recursive = TRUE)
         
-        write.csv(df, file.path("App","data_cleansed3", country, city, data_date, "listings.csv"), row.names=FALSE)
-        print(paste0("saving data into ", file.path("App", "data_cleansed3", country, city, data_date, "listings.csv")))
+        write.csv(df, file.path("App","data_cleansed", country, city, data_date, "listings.csv"), row.names=FALSE)
+        print(paste0("saving data into ", file.path("App", "data_cleansed", country, city, data_date, "listings.csv")))
         
         print(Sys.time() - start_time)
         
