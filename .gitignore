@@ -1,1 +1,3 @@
 App/data_cleansed/**
+.RData
+.Rhistory
