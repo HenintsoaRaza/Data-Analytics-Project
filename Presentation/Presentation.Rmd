@@ -1,0 +1,104 @@
+---
+title: "Data Analysis Project : Airbnb"
+author: "RAZAFINDRAZAKA Henintsoa, WANG James"
+output: ioslides_presentation
+---
+
+
+```{r setup, include=FALSE}
+library(tidyverse)
+
+knitr::opts_chunk$set(echo = FALSE)
+
+# load_data <- function(){
+#     list_dirs <- list.dirs('../App/data_cleansed')
+#     
+#     nb_dirs <- function(path){
+#         nb <- lengths(str_split(path, '/'))
+#         return(nb)
+#     }
+#     
+#     path_kept <- list_dirs[nb_dirs(list_dirs)==6]
+#     
+#     df <- read.csv(paste0(path_kept[1],'/listings.csv'))
+#     
+#     for(path in path_kept[2:39]){
+#         file_path <- file.path(path,'listings.csv')
+#         print(file_path)
+#         df <- rbind(df,read.csv(file_path))
+#     }
+#     
+#     df$bedrooms <- ifelse(df$bedrooms >= 5, "5+", df$bedrooms)
+#     df$beds <- ifelse(df$beds >= 5, "5+", df$beds)
+#     df$accommodates <- ifelse(df$accommodates >= 10, "10+", df$accommodates)
+#     return(df)
+# }
+# 
+# df <- load_data()
+```
+
+## Summary
+
+- App
+  - Home 
+  
+  - Compare cities
+    - Compare the proportion of beds per city selected
+    - Compare the proportion of neighbourhood per city selected
+    - Compare the distribution of beds per city and feature selected 
+    - Compare the density of availibility per city selected
+    
+  - Deep dive into a city
+    - Proportion of accommodates and Information table of the selected feature             according to a dimension
+    - Same graphics than before but for only one city
+    - Map
+
+
+<!-- ##  Analysis 1: Comparing Cities -->
+<!-- ![Mean_avenue_30](screen/Mean_avenue_30.png) -->
+<!-- ![distribution of estimated revenue per city and bedrooms](screen/city_bedrooms_revenue_30.png){width=800px height=388px} -->
+
+<!-- df %>% -->
+<!--   group_by(city) %>% -->
+<!--   summarise(Mean_revenue_30 = mean(revenue_30)) -->
+
+<!-- avgRev30_city_bed <- ggplot(df[!is.na(df$bedrooms),], aes(city, revenue_30, fill=city)) -->
+
+<!-- avgRev30_city_bed + geom_boxplot(aes(colour = bedrooms), lwd = 0.8, position = position_dodge(0.9), outlier.shape = NA) + -->
+<!--   scale_y_continuous(limits = quantile(df$revenue_30, c(0.1, 0.9), na.rm = T)) + -->
+<!--   scale_fill_brewer(palette="Set1")  -->
+
+## Home
+.center[![Home](screen/Home.png)]
+
+## Compare cities
+Compare the proportion of beds per city selected
+![](screen/1_histogram_beds.png){width=800px height=500px}
+
+## Compare cities
+Compare the proportion of neighbourhood per city selected
+![](screen/1_histo_neighbourhood.png){width=800px height=500px}
+
+## Compare cities
+Compare the distribution of beds per city and feature selected 
+![](screen/1_boxplot_beds_avai30.png){width=800px height=500px}
+
+## Compare cities
+Compare the density of availibility per city selected
+![](screen/1_density_avai.png){width=800px height=500px}
+
+
+## Deep dive into a city
+Proportion of accommodates and Information table of the selected feature      according to a dimension
+![](screen/2_proportion_accommodates.png){width=800px height=500px}  
+
+## Deep dive into a city
+Same graphics than before but for only one city
+![](screen/2_boxplot_avai_acco.png){width=500px height=250px}
+![](screen/2_neighbohood_proportion.png){width=500px height=250px}
+
+
+## Deep dive into a city
+
+![](screen/2_map1.png){width=500px height=250px}
+![](screen/2_map3.png){width=500px height=250px}
