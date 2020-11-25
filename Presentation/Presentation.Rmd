@@ -80,7 +80,7 @@ knitr::opts_chunk$set(echo = FALSE)
 
 ## Compare cities
 Compare the proportion of beds per city selected
-![](screen/1_histogram_beds.png){width=800px height=500px}
+![](screen/1_histogram_bedrooms.png){width=800px height=500px}
 
 ## Compare cities
 Compare the proportion of neighbourhood per city selected
