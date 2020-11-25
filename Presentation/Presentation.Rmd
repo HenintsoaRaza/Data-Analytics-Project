@@ -39,20 +39,24 @@ knitr::opts_chunk$set(echo = FALSE)
 
 ## Summary
 
-- App
-  - Home 
-  
-  - Compare cities
-    - Compare the proportion of beds per city selected
-    - Compare the proportion of neighbourhood per city selected
-    - Compare the distribution of beds per city and feature selected 
-    - Compare the density of availibility per city selected
-    
-  - Deep dive into a city
-    - Proportion of accommodates and Information table of the selected feature             according to a dimension
-    - Same graphics than before but for only one city
-    - Map
-
+<ul>
+  <li>Home</li>
+  <li>Compare cities
+    <ul>
+      <li>Compare the proportion of beds per city selected</li>
+      <li>Compare the proportion of neighbourhood per city selected</li>
+      <li>Compare the distribution of beds per city and feature selected</li>
+      <li>Compare the density of availibility per city selected</li>
+    </ul>
+  </li>
+  <li>Deep dive into a city
+    <ul>
+      <li>Proportion of accommodates and Information table of the selected feature             according to a dimension</li>
+      <li>Same graphics than before but for only one city</li>
+      <li>Map</li>
+    </ul>
+  </li>
+</div>
 
 <!-- ##  Analysis 1: Comparing Cities -->
 <!-- ![Mean_avenue_30](screen/Mean_avenue_30.png) -->
@@ -68,8 +72,11 @@ knitr::opts_chunk$set(echo = FALSE)
 <!--   scale_y_continuous(limits = quantile(df$revenue_30, c(0.1, 0.9), na.rm = T)) + -->
 <!--   scale_fill_brewer(palette="Set1")  -->
 
-## Home
-.center[![Home](screen/Home.png)]
+## Home 
+<!-- ![Home](screen/Home.png){width=500px height=800px} -->
+<div align="center">
+<img src="screen/Home.png" width=600 height=600>
+</div>
 
 ## Compare cities
 Compare the proportion of beds per city selected
@@ -93,12 +100,14 @@ Proportion of accommodates and Information table of the selected feature      ac
 ![](screen/2_proportion_accommodates.png){width=800px height=500px}  
 
 ## Deep dive into a city
+<div align="center">
 Same graphics than before but for only one city
 ![](screen/2_boxplot_avai_acco.png){width=500px height=250px}
 ![](screen/2_neighbohood_proportion.png){width=500px height=250px}
-
+</div>
 
 ## Deep dive into a city
-
+<div align="center">
 ![](screen/2_map1.png){width=500px height=250px}
 ![](screen/2_map3.png){width=500px height=250px}
+</div>
