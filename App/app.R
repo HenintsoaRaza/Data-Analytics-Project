@@ -1,93 +1,12 @@
 library(shiny)
 library(shinythemes)
-library(tidyverse)
 library(ggplot2)
 library(leaflet)
 library(htmltools)
-library(plotly)
-library(data.table)
 
+setwd('../')
 
-path_depth <- function(path){
-    nb <- lengths(str_split(path, '/'))
-    return(nb)
-}
-
-load_data <- function(cities, start_date, end_date){
-    list_dirs <- list.dirs('./data_cleansed')
-
-    path_kept <- list_dirs[ path_depth(list_dirs)==5 ]
-
-    keep_bool = c()
-
-    for(p in path_kept){
-        splitted <- str_split_fixed(p, '/', n = 6)
-        path_city <- splitted[,4]
-        path_date <- splitted[,5]
-        if(any(grepl( path_city, cities, fixed = TRUE)) & start_date <= path_date & path_date <= end_date ){
-            keep_bool <- append(keep_bool, TRUE)
-        }
-        else{
-            keep_bool <- append(keep_bool, FALSE)
-        }
-    }
-
-    path_kept <- path_kept[ keep_bool ]
-    print(path_kept)
-
-    if(!is.na(path_kept[1])){
-        df <- fread(paste0(path_kept[1],'/listings.csv'), header = T, sep = ',', data.table = F)
-        
-        
-        for(path in path_kept[-1]){
-            file_path <- file.path(path,'listings.csv')
-            df <- rbind(df,fread(file_path, header = T, sep = ',', data.table = F))
-            
-        }
-        df$bedrooms <- ifelse(df$bedrooms >= 5, "5+", df$bedrooms)
-        df$beds <- ifelse(df$beds >= 5, "5+", df$beds)
-        df$accommodates <- ifelse(df$accommodates >= 10, "10+", df$accommodates)
-        return(df)
-    }
-    else return(NULL)
-    
-}
-
-load_countries_cities <- function(){
-    list_dirs <- list.dirs('./data_cleansed')
-    
-    path_kept <- list_dirs[ path_depth(list_dirs) == 4 ]
-    countries_cities <- c()
-    for(p in path_kept){
-        countries_cities <- append(countries_cities, str_split_fixed(p, '/', n = 5)[,3:4])
-    }
-    return(countries_cities)
-}
-
-countries_cities <- load_countries_cities()
-
-country_list <- c()
-city_list <- c()
-
-for(i in seq(1,length(countries_cities)-1,by=2) ){
-    country_list <- append(country_list, countries_cities[i])
-    city_list <- append(city_list, countries_cities[i+1])
-}
-
-print(city_list)
-
-df_countries_cities <- data.frame(country = country_list, city = city_list)
-
-cities <- list()
-
-for(c in country_list){
-    filtered_city <- df_countries_cities %>% distinct(country, city) %>% filter(country == c)
-    cities[c] <- list(filtered_city$city)
-}
-
-
-rm(df_countries_cities)
-
+source("Scripts/load_data.R")
 
 # /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 # //////////////////////////////////////////                          /////////////////////////////////////////
@@ -347,7 +266,6 @@ server <- function(input, output) {
                 count(neighbourhood_cleansed) %>%
                 arrange(city, desc(n)) %>%
                 top_n(10, n)
-            print(top_10_neighborhood)
             top_10_neighborhood$neighbourhood_cleansed <- factor(top_10_neighborhood$neighbourhood_cleansed, levels = top_10_neighborhood$neighbourhood_cleansed[order(top_10_neighborhood$n)])
             ggplot(top_10_neighborhood, aes(x = neighbourhood_cleansed, fill= city)) + 
                 geom_bar(aes(x = neighbourhood_cleansed, y = n), stat="identity",  lwd = 0.8, position = position_dodge(0.9), na.rm = T) +
@@ -383,7 +301,8 @@ server <- function(input, output) {
     
     output$table2 <- renderTable({
         
-        df_table <- df_filtered2()
+        
+        df_table <- df_filtered2
         
         df_table <- df_table %>% filter( !is.na(df_table[input$dimension2]) )
         
@@ -413,7 +332,9 @@ server <- function(input, output) {
             addMarkers(clusterOptions = markerClusterOptions(), 
                        popup = ~ paste0( tags$b("City: "), city , "</br>",
                                          tags$b("Neighbourhood: "), neighbourhood_cleansed, "</br>",
-                                         tags$b("Price: "), price, " $"),
+                                         tags$b("Price: "), price, " $", "</br>",
+                                         tags$a(href = listing_url[1], "Link")
+                                         ),
                        label = ~htmlEscape(neighbourhood_cleansed)
             )
     })
