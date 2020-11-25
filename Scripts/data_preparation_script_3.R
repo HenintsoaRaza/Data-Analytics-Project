@@ -8,11 +8,17 @@ setwd(this.dir)
 setwd('../')
 
 rm(list=ls())
+
+firstup <- function(word) {
+    substr(word, 1, 1) <- toupper(substr(word, 1, 1))
+    return(word)
+}
+
 start_time <- Sys.time()
 # Number of last files we keep per countries (according to the date)
 NB_KEEP_DATES <- 3
 # We choose 3 countries among these ones : "france", "spain", "italy", "germany", "the-netherlands", "belgium"
-selected_countries <- c("france", "italy", "germany")
+selected_countries <-  c("germany")#, "the-netherlands", "belgium") #c("france", "spain", "italy")
 
 file_path <- file.path("App", "all_data_urls.csv")
 all_urls <- read.csv(file = file_path)
@@ -31,7 +37,7 @@ all_urls <- all_urls %>%
 ## Select interesting columns
 ### Most columns don't contain interesting information
 columns_listings <- c("country","city", "data_date", "id", "neighbourhood_cleansed",
-                      "latitude", "longitude",
+                      "latitude", "longitude", "listing_url",
                       "property_type", "room_type", "accommodates", "bedrooms",
                       "beds", "price", "minimum_nights",  "maximum_nights")
 
@@ -43,20 +49,20 @@ load_data_from_url <- function(listings_url){
     
     print(listings_url)
     splitted_url <- str_split_fixed(listings_url, '/', n=10)
-    country <- splitted_url[,4]
-    city <- splitted_url[,6]
+    country <- firstup(splitted_url[,4])
+    city <- firstup(splitted_url[,6])
     data_date <- splitted_url[,7]
     calendar_url <- str_replace(listings_url, "listings", "calendar")
     
     
-    df_list <- fread(listings_url, header = T, sep = ',', nThread = NB_THREADS)
-    df_cal <- fread(calendar_url, header = T, sep = ',', nThread = NB_THREADS)
+    df_list <- fread(listings_url, header = T, sep = ',', data.table = F, nThread = NB_THREADS)
+    df_cal <- fread(calendar_url, header = T, sep = ',', data.table = F,  nThread = NB_THREADS)
     
     ## Add Keys: columns country, city and data date 
     df_list$country <- country
     df_list$city <- city
     df_list$data_date <- data_date
-    
+
     missing_columns <- setdiff(columns_listings, colnames(df_list))
     
     print(paste("Number of missing columns: ",length(missing_columns)))
@@ -164,10 +170,7 @@ load_data_from_url <- function(listings_url){
         print(Sys.time() - start_time)
         
         return(df)
-        
     }
-    
-
 }
 
 df_clean <- all_urls %>%
@@ -176,6 +179,7 @@ df_clean <- all_urls %>%
 
 df_clean <- data.frame(Reduce(rbind, df_clean))
 
+source('./Scripts/remove_na.R')
 
 end_time <- Sys.time()
 
