@@ -2,14 +2,14 @@
 
 **Airbnb Analytics App**
 
-Welcome to our Airbnb analytics App that allows you to get some interesting insights on Airbnb statistics.\
+Welcome to our Airbnb analytics App that allows you to get some interesting insights on Airbnb statistics.<br />
 
 Our app allows you to perform two different types of analysis:
 
 1. Perform comparison between cities
-2. Deep dive into a selected city\
+2. Deep dive into a selected city<br />
 
-**1) Compare multiple cities**\
+**1) Compare multiple cities**<br />
 
 The first type of analysis allows you to display insightful graphics (Density, Boxplot and Histogram) concerning the cities of your choice. 
 
@@ -17,10 +17,10 @@ The main goal of this section is to compare statistics between cities, therefore
 
 Our graphs will automatically adapt themselves with respect to your filters such as date, feature and dimension. 
 
-Finally, you can also display a table that stores the average and median of the selected feature. All these filters are placed beautifully in a sidebar on the left of the panel.\
+Finally, you can also display a table that stores the average and median of the selected feature. All these filters are placed beautifully in a sidebar on the left of the panel.<br />
 
 
-**2) Deep dive into a specific city** \
+**2) Deep dive into a specific city** <br />
 
 The second type of analysis allows you to display more information for a specific city. 
 As in the first section, the filters are the same but you can select only one city. 
