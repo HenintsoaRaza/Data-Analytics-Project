@@ -17,7 +17,7 @@ The main goal of this section is to compare statistics between cities, therefore
 
 Our graphs will automatically adapt themselves with respect to your filters such as date, feature and dimension. 
 
-Finally, you can also display a table that stores the average and median of the selected feature. All these filters are placed beautifully in a sidebar on the left of the panel.<br />
+Finally, you can also display a table that stores the average and median of the selected feature. All these filters are placed beautifully in a sidebar on the left of the panel.
 
 
 **2) Deep dive into a specific city** <br />
