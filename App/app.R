@@ -35,7 +35,7 @@ load_data <- function(cities, start_date, end_date){
     path_kept <- path_kept[ keep_bool ]
     print(path_kept)
 
-    if(!is.na(path_kept)){
+    if(!is.na(path_kept[1])){
         df <- fread(paste0(path_kept[1],'/listings.csv'), header = T, sep = ',', data.table = F)
         
         
@@ -69,10 +69,12 @@ countries_cities <- load_countries_cities()
 country_list <- c()
 city_list <- c()
 
-for(i in seq(1,length(cities)-1,by=2) ){
-    country_list <- append(country_list, cities[i])
-    city_list <- append(city_list, cities[i+1])
+for(i in seq(1,length(countries_cities)-1,by=2) ){
+    country_list <- append(country_list, countries_cities[i])
+    city_list <- append(city_list, countries_cities[i+1])
 }
+
+print(city_list)
 
 df_countries_cities <- data.frame(country = country_list, city = city_list)
 
@@ -82,6 +84,7 @@ for(c in country_list){
     filtered_city <- df_countries_cities %>% distinct(country, city) %>% filter(country == c)
     cities[c] <- list(filtered_city$city)
 }
+
 
 rm(df_countries_cities)
 
@@ -251,9 +254,7 @@ server <- function(input, output) {
 # ******************************************************************************************
     df_filtered1 <- reactive({
         req(input$cities1)
-
         df <- load_data(input$cities1, input$dates1[1], input$dates1[2])
-        # df <- df %>% filter(input$dates1[1] <= data_date & data_date <= input$dates1[2])
         return(df)
     })
     
@@ -333,7 +334,6 @@ server <- function(input, output) {
     
     df_filtered2 <- reactive({
         df <- load_data(input$cities2, input$dates2[1], input$dates2[2] )
-        # df <- df %>% filter(input$dates2[1] <= data_date & data_date <= input$dates2[2])
         return(df)
     })
     
