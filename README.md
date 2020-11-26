@@ -1,5 +1,9 @@
 # Data-Analytics-Project
 
+**Authors:** 
+- *Henintsoa RAZAFINDRAZAKA, James WANG* [BDA gr02]
+- *Arnaud JULLEMIER-MILLASSEAU, Maxence HUSSONNOIS* [BDA gr01]
+
 **Airbnb Analytics App**
 
 Welcome to our Airbnb analytics App that allows you to get some interesting insights on Airbnb statistics.<br />
