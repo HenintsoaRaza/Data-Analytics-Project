@@ -1,5 +1,5 @@
 ---
-title: "Data Analysis Project : Airbnb"
+title: "Data Analytics Project : Airbnb"
 author: "RAZAFINDRAZAKA Henintsoa, WANG James"
 output: 
   ioslides_presentation:
@@ -46,17 +46,15 @@ df <- load_data()
   <li>Preprocessing</li>
   <li>App</li>
   <ul>
-    <li>Home</li>
+    <li>Documentation</li>
     <li>Compare cities
       <ul>
-        <li>Boxplot Distribution</li>
         <li>Comparisons between cities</li>
       </ul>
     </li>
     <li>Deep dive into a city
       <ul>
-        <li>Second tab</li>
-        <li>Comparisons </li>
+        <li>Finer grained analysis</li>
         <li>Map</li>
       </ul>
     </li>
@@ -65,56 +63,54 @@ df <- load_data()
 </div>
 
 ## Data
-<!-- table avec les diffentes villes et country -->
+<!-- Quick view of the Data -->
+```{r message=FALSE, warning=FALSE}
 df %>%
-  group_by(city) %>%
-  summarise(Mean_revenue_30 = mean(revenue_30))
+  top_n(10) %>% 
+  knitr::kable()
+
+```
+## Preprocessing
+<!-- parler du fait qu'on a reuse le meme script qu'avant  -->
+<!-- expliquer comment ta géré les colonnes manquantes !  -->
+<!-- cad création des colonnes commandes en mettant des NA -->
+<div align="center">
+![](screen/code1.png){width=800px height=500px}
+</div>
 
 ## Preprocessing
 <!-- parler du fait qu'on a reuse le meme script qu'avant  -->
 <!-- expliquer comment ta géré les colonnes manquantes !  -->
 <!-- cad création des colonnes commandes en mettant des NA -->
 <div align="center">
-<img src="screen/prepro1.png" width=600 height=600>
+![](screen/code2.png){width=600px height=500px}
 </div>
 
-## Home 
+## Preprocessing
+<!-- parler du fait qu'on a reuse le meme script qu'avant  -->
+<!-- expliquer comment ta géré les colonnes manquantes !  -->
+<!-- cad création des colonnes commandes en mettant des NA -->
 <div align="center">
-<img src="screen/Home.png" width=600 height=600>
+![](screen/code3.png){width=500px height=200px}
 </div>
 
-## Compare cities : Boxplot distribution 
+## Documentation 
+<div align="center">
+![](screen/doc.PNG){width=800px height=500px}
+</div>
+
+## 1. Compare cities : Boxplot distribution 
 <div align="center">
 ![](screen/1_boxplot_beds_avai30.png){width=800px height=500px}
 </div>
 
-## Compare cities : Comparisons 
-<div align="center">
-  <span>
-  <img src="screen/1_density_avai.png" width=400 height=288>
-  <img src="screen/1_histo_neighbourhood.png" width=400 height=288>
-  </span>
-  <img src="screen/1_histogram_bedrooms.png" width=780 height=250>
-</div>
-
-## Deep dive into a city
+## 2. Deep dive into a city
 <!-- Proportion of accommodates and Information table of the selected feature      according to a dimension  -->
 <div align="center">
-![](screen/2_proportion_accommodates.png){width=800px height=550px}
-</div>
-## Deep dive into a city
-<!-- Same graphics than before but for only one city -->
-
-<div align="center">
-  <span>
-  <img src="screen/2_boxplot_avai_acco.png" width=400 height=288>
-  <img src="screen/2_neighbohood_proportion.png" width=400 height=288>
-  </span>
-  <img src="screen/2_density_avai.png" width=600 height=260>
+![](screen/2_proportion_accommodates.png){width=800px height=500px}
 </div>
 
-## Deep dive into a city
+## 2. Deep dive into a city
 <div align="center">
-![](screen/2_map1.png){width=500px height=250px}
-![](screen/2_map3.png){width=500px height=250px}
+![](screen/2_map1.png){width=800px height=500px}
 </div>

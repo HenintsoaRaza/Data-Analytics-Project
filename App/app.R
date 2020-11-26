@@ -19,65 +19,30 @@ ui <- fluidPage(
         theme = shinytheme('simplex'),
         navbarPage(
             title = div( tags$img(src = "logo2.png",height="15%", width="15%"), style = "text-align:center;")  ,
-            tabPanel(div("HOME", style = "font-size: 15px"),
-                 br(), 
-                 mainPanel(
-                     tags$style(type="text/css",
-                                ".shiny-output-error { visibility: hidden; }",
-                                ".shiny-output-error:before { visibility: hidden; }"
+            tabPanel(div("HOME", style = "font-size: 15px;"),
+                     tags$img(src='background2.jpg', style = 'width: 100% ; height: 100%')
                      ),
-                     h1("Airbnb Analytics App"),
-                     br(),
-                     p("Welcome to our Airbnb analytics App that allows you to get some interesting insights on Airbnb statistics."),
-                     br(),
-                     br(),
-                     p("Our app allows you to perform two different types of analysis: "),
-                     tags$ol(
-                         tags$li("Perform comparison between cities"), 
-                         tags$li("Deep dive into a selected city")
-                     ),
-                     br(),
-                     br(),
-                     h3("1) Compare multiple cities"),
-                     p("The first type of analysis allows you to display insightful graphics (Density, Boxplot and Histogram) 
-                     concerning the cities of your choice.",br(),br(),
-                     "The main goal of this section is to compare statistics between cities, therefore it is granted to you 
-                     to select multiple cities. ",br(),br(),
-                     "Our graphs will automatically adapt themselves with respect to your filters 
-                     such as date, feature and dimension.",br(),br(),
-                     "Finally, you can also display a table that stores the average and median of the selected feature. 
-                     All these filters are placed beautifully in a sidebar on the left of the panel."),
-                     br(),
-                     h3("2) Deep dive into a specific city"),
-                     p("The second type of analysis allows you to display more information for a specific city.", br(),
-                     " As in the first section, the filters are the same but you can select only one city.", br(),br(),
-                     "This finer grained analysis gives you some information such as average and median of 
-                     the selected feature according to a dimension you specify. ", br(),br(),
-                     "Eventually, we provide you a map, so that you may picture yourself easily and interactivelly 
-                     the different accommodations geographically"),
-                 ),
-            ),
             tabPanel(div("1. Compare multiple cities", style = "font-size: 15px"),
                  br(),
                  sidebarLayout(
                      sidebarPanel(
                          selectInput("cities1", 
-                                     h3("Filter by city"),
+                                     h4("Filter by city"),
                                      multiple = TRUE,
                                      choices = cities
                          ),
                          dateRangeInput("dates1", 
-                                        h3("Date range"), 
+                                        h4("Date range"), 
                                         format = "yyyy-mm-dd",
                                         start = "2020-01-01",
                                         end = "2020-12-12"),
                          radioButtons("feature1", 
-                                      h3("Select the feature"),
+                                      h4("Select the feature"),
                                       choices = list("Availability over 30 days" = 'availability_30', 
                                                      "Average price over 30 days" = 'price_30',
                                                      "Expected revenue over 30 days" = 'revenue_30' )),
                          selectInput("dimension1", 
-                                     h3("Add new dimension"),
+                                     h4("Add new dimension"),
                                      choices = c("neighbourhood_cleansed", 
                                                  "room_type", 
                                                  "accommodates",
@@ -85,14 +50,15 @@ ui <- fluidPage(
                                                  "beds"),
                                      selected = "beds"
                          ),
-                         h3("Select the aggregation type"),
+                         h4("Select the aggregation type"),
                          checkboxInput("average1", "Average", value = FALSE),
                          checkboxInput("median1", "Median", value = FALSE),
                          radioButtons("choicePlot1", 
-                                      h3("Select the plot type"),
+                                      h4("Select the plot type"),
                                       choices = list("histogram" = "histogram", 
                                                      "density" = "density",
-                                                     "boxplot" = "boxplot"),
+                                                     "boxplot" = "boxplot",
+                                                     "proportion" = "proportion"),
                                       selected = "histogram"
                          ),
                          submitButton("Submit"),
@@ -111,22 +77,22 @@ ui <- fluidPage(
                  sidebarLayout(
                      sidebarPanel(
                          selectInput("cities2", 
-                                     h3("Filter by city"),
+                                     h4("Filter by city"),
                                      multiple = FALSE,
                                      choices = cities
                          ),
                          dateRangeInput("dates2", 
-                                        h3("Date range"), 
+                                        h4("Date range"), 
                                         format = "yyyy-mm-dd",
                                         start = "2020-01-01",
                                         end = "2020-12-12"),
                          radioButtons("feature2", 
-                                      h3("Select the feature"),
+                                      h4("Select the feature"),
                                       choices = list("Availability over 30 days" = 'availability_30', 
                                                      "Average price over 30 days" = 'price_30',
                                                      "Expected revenue over 30 days" = 'revenue_30' )),
                          selectInput("dimension2", 
-                                     h3("Add new dimension"),
+                                     h4("Add new dimension"),
                                      choices = c("neighbourhood_cleansed", 
                                                  "room_type", 
                                                  "accommodates",
@@ -134,14 +100,15 @@ ui <- fluidPage(
                                                  "beds"),
                                      selected = "beds"
                          ), 
-                         h3("Select the aggregation type"),
+                         h4("Select the aggregation type"),
                          checkboxInput("average2", "Average", value = FALSE),
                          checkboxInput("median2", "Median", value = FALSE),
                          radioButtons("choicePlot2", 
-                                      h3("Select the plot type"),
+                                      h4("Select the plot type"),
                                       choices = list("histogram" = "histogram", 
                                                      "density" = "density",
-                                                     "boxplot" = "boxplot"),
+                                                     "boxplot" = "boxplot",
+                                                     "proportion" = "proportion"),
                                       selected = "histogram"
                          ),
                          submitButton("Submit"),
@@ -155,7 +122,43 @@ ui <- fluidPage(
                     )
                 ),
                 leafletOutput("mymap", height = 750)
-            )
+            ),
+            tabPanel(div("Documentation", style = "font-size: 15px"),
+                     br(), 
+                     mainPanel(
+                         tags$style(type="text/css",
+                                    ".shiny-output-error { visibility: hidden; }",
+                                    ".shiny-output-error:before { visibility: hidden; }"
+                         ),
+                         h1("Airbnb Analytics App"),
+                         br(),
+                         p("Welcome to our Airbnb analytics App that allows you to get some interesting insights on Airbnb statistics."),
+                         br(),
+                         br(),
+                         p("Our app allows you to perform two different types of analysis: "),
+                         tags$ol(
+                             tags$li("Perform comparison between cities"), 
+                             tags$li("Deep dive into a selected city")
+                         ),br(),
+                         h3("1) Compare multiple cities"),
+                         p("The first type of analysis allows you to display insightful graphics (Density, Boxplot and Histogram) 
+                     concerning the cities of your choice.",br(),br(),
+                           "The main goal of this section is to compare statistics between cities, therefore it is granted to you 
+                     to select multiple cities. ",br(),br(),
+                           "Our graphs will automatically adapt themselves with respect to your filters 
+                     such as date, feature and dimension.",br(),br(),
+                           "Finally, you can also display a table that stores the average and median of the selected feature. 
+                     All these filters are placed beautifully in a sidebar on the left of the panel."),
+                         br(),
+                         h3("2) Deep dive into a specific city"),
+                         p("The second type of analysis allows you to display more information for a specific city.", br(),
+                           " As in the first section, the filters are the same but you can select only one city.", br(),br(),
+                           "This finer grained analysis gives you some information such as average and median of 
+                     the selected feature according to a dimension you specify. ", br(),br(),
+                           "Eventually, we provide you a map, so that you may picture yourself easily and interactivelly 
+                     the different accommodations geographically")
+                     )
+                     )
         )
 )
 
@@ -186,39 +189,36 @@ server <- function(input, output) {
                 group_by(city) %>%
                 count(neighbourhood_cleansed) %>%
                 arrange(city, desc(n)) %>%
-                top_n(10, n)
-            top_10_neighborhood$neighbourhood_cleansed <- factor(top_10_neighborhood$neighbourhood_cleansed, levels = top_10_neighborhood$neighbourhood_cleansed[order(top_10_neighborhood$n)])
+                top_n(10, n) 
             
-            ggplot(top_10_neighborhood, aes(x = neighbourhood_cleansed, fill= city)) + 
-                geom_bar(aes(x = neighbourhood_cleansed, y = n), stat="identity",  lwd = 0.8, position = position_dodge(0.9), na.rm = T) +
-                coord_flip() + xlab("Neighborhoods") + ylab("Proportions") 
+            df_plot <- df_plot %>% 
+                filter(neighbourhood_cleansed %in% top_10_neighborhood$neighbourhood_cleansed ) 
             
-
+            df_plot <- factor(df_plot$neighbourhood_cleansed, levels = df_plot$neighbourhood_cleansed[sort(unique(df_plot[input$feature1]))])
+            
+            
         }  
-        else {
-            if (input$choicePlot1 == 'boxplot') {
-                ggplot(df_plot, aes_string('city', input$feature1, fill='city')) +
-                    geom_boxplot(aes_string(colour = input$dimension1), outlier.shape = NA) +
-                    scale_y_continuous(limits = quantile(df_plot[input$feature1], c(0.1, 0.9), na.rm = T)) +
-                    scale_fill_brewer(palette="Set1")
-                
-            }
-            else if (input$choicePlot1 == 'histogram') {
-                ggplot(df_plot, aes_string(input$dimension1)) +
-                    geom_bar(aes(y = (..count..)/sum(..count..), fill=factor(..x..)), stat= "count") +
-                    geom_text(aes(label = scales::percent(round((..count..)/sum(..count..),3)),
-                                  y= ((..count..)/sum(..count..))), stat="count",
-                              vjust = -.25) + theme(legend.position = "none") + facet_wrap(~ city) +
-                    ylab("Proportion") 
-                
-            }
-            else if (input$choicePlot1 == 'density') {
-                ggplot(df_plot[!is.na(df_plot[input$feature1]),], aes_string(input$feature1, fill = 'city')) +
-                    geom_density(alpha = 0.4) +
-                    ylab("density")
-                
-            }
+        
+        if (input$choicePlot1 == 'boxplot') {
+            ggplot(df_plot, aes_string(input$dimension1, input$feature1, fill='city')) +
+                geom_boxplot( outlier.shape = NA) +
+                scale_y_continuous(limits = quantile(df_plot[input$feature1], c(0.1, 0.9), na.rm = T)) +
+                scale_fill_brewer(palette="Set1") + theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
         }
+        else if (input$choicePlot1 == 'histogram') {
+            ggplot(df_plot, aes_string(x = input$dimension1, y = input$feature1, fill='city')) +
+                geom_bar(stat='identity') + ylab(input$feature1) +  coord_flip()
+        }
+        else if (input$choicePlot1 == 'density') {
+            ggplot(df_plot[!is.na(df_plot[input$feature1]),], aes_string(input$feature1, fill = 'city')) +
+                geom_density(alpha = 0.4) + ylab("density")
+        }
+        else if (input$choicePlot1 == 'proportion'){
+            ggplot(df_plot, aes_string(x = input$dimension1, fill= 'city')) +
+                geom_bar(aes_string(x = input$dimension1), stat="count",  lwd = 0.8, position = position_dodge(0.9), na.rm = T) +
+                coord_flip() + xlab(input$dimension1) + ylab("Proportions")
+        }
+        
         
     })
 
@@ -265,35 +265,35 @@ server <- function(input, output) {
                 group_by(city) %>%
                 count(neighbourhood_cleansed) %>%
                 arrange(city, desc(n)) %>%
-                top_n(10, n)
-            top_10_neighborhood$neighbourhood_cleansed <- factor(top_10_neighborhood$neighbourhood_cleansed, levels = top_10_neighborhood$neighbourhood_cleansed[order(top_10_neighborhood$n)])
-            ggplot(top_10_neighborhood, aes(x = neighbourhood_cleansed, fill= city)) + 
-                geom_bar(aes(x = neighbourhood_cleansed, y = n), stat="identity",  lwd = 0.8, position = position_dodge(0.9), na.rm = T) +
-                coord_flip() + xlab("Neighborhoods") + ylab("Proportions") 
+                top_n(10, n) 
+            
+            df_plot <- df_plot %>% 
+                filter(neighbourhood_cleansed %in% top_10_neighborhood$neighbourhood_cleansed ) 
             
         }  
-        else {
             
-            if (input$choicePlot2 == 'boxplot') {
-                ggplot(df_plot, aes_string('city', input$feature2, fill='city')) +
-                    geom_boxplot(aes_string(colour = input$dimension2), outlier.shape = NA) +
-                    scale_y_continuous(limits = quantile(df_plot[input$feature2], c(0.1, 0.9), na.rm = T)) +
-                    scale_fill_brewer(palette="Set1")
-            }
-            else if (input$choicePlot2 == 'histogram') {
-                ggplot(df_plot, aes_string(input$dimension2)) +
-                    geom_bar(aes(y = (..count..)/sum(..count..), fill=factor(..x..)), stat= "count") +
-                    geom_text(aes(label = scales::percent(round((..count..)/sum(..count..),3)),
-                                  y= ((..count..)/sum(..count..))), stat="count",
-                              vjust = -.25) + theme(legend.position = "none") + facet_wrap(~ city) +
-                    ylab("Proportion")
-            }
-            else if (input$choicePlot2 == 'density') {
-                ggplot(df_plot[!is.na(df_plot[input$feature2]),], aes_string(input$feature2, fill = 'city')) +
-                    geom_density(alpha = 0.4) +
-                    ylab("density")
-            }
+        if (input$choicePlot2 == 'boxplot') {
+            ggplot(df_plot, aes_string(input$dimension2, input$feature2, fill='city')) +
+                geom_boxplot( outlier.shape = NA) +
+                scale_y_continuous(limits = quantile(df_plot[input$feature2], c(0.1, 0.9), na.rm = T)) +
+                scale_fill_brewer(palette="Set1") + theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
         }
+        else if (input$choicePlot2 == 'histogram') {
+            ggplot(df_plot, aes_string(x = input$dimension2, y = input$feature2, fill='city')) +
+                geom_bar(stat='identity') +
+                ylab(input$feature2) + coord_flip()
+        }
+        else if (input$choicePlot2 == 'density') {
+            ggplot(df_plot[!is.na(df_plot[input$feature2]),], aes_string(input$feature2, fill = 'city')) +
+                geom_density(alpha = 0.4) +
+                ylab("density")
+        }
+        else if (input$choicePlot2 == 'proportion'){
+            ggplot(df_plot, aes_string(x = input$dimension2, fill= 'city')) +
+                geom_bar(aes_string(x = input$dimension2), stat="count",  lwd = 0.8, position = position_dodge(0.9), na.rm = T) +
+                coord_flip() + xlab(input$dimension2) + ylab("Proportions")
+        }
+        
         
         
     })

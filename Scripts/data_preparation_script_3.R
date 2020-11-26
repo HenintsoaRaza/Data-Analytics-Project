@@ -17,8 +17,7 @@ firstup <- function(word) {
 start_time <- Sys.time()
 # Number of last files we keep per countries (according to the date)
 NB_KEEP_DATES <- 3
-# We choose 3 countries among these ones : "france", "spain", "italy", "germany", "the-netherlands", "belgium"
-selected_countries <-  c("germany")#, "the-netherlands", "belgium") #c("france", "spain", "italy")
+selected_countries <-  c("germany", "the-netherlands", "belgium","france", "spain", "italy")
 
 file_path <- file.path("App", "all_data_urls.csv")
 all_urls <- read.csv(file = file_path)
@@ -117,7 +116,8 @@ load_data_from_url <- function(listings_url){
             return(df)
             
     }
-    else { # If there are some missing columns ...
+    # If there are some missing columns ...
+    else { 
         
         ## add day number (starting first day)
         df_cal <- df_cal %>%
@@ -137,19 +137,17 @@ load_data_from_url <- function(listings_url){
             ## calculate estimated revenue for upcoming day
             mutate(revenue = price*(1-available)) %>%
             
-            ## calculate availability, price, revenue for next 30, 60 days ... for each listing_id
+            ## calculate availability, price, revenue for next 30 for each listing_id
             group_by(listing_id) %>%
             mutate(price = mean(price), 
                    availability_30 = sum(available[day_nb<=30], na.rm = TRUE),
                    price_30 = mean(price[day_nb<=30 & available==0], na.rm = TRUE),
-                   revenue_30 = sum(revenue[day_nb<=30], na.rm = TRUE)      
-            ) %>%
+                   revenue_30 = sum(revenue[day_nb<=30], na.rm = TRUE) ) %>%
             ungroup() %>%
             filter(day_nb<=30) %>%
             select( -c("date", "available", "adjusted_price") ) %>%
             rename(id = listing_id) %>%
             distinct(id, .keep_all = TRUE)
-        
         
         df <- df_list %>% 
             select(-availability_30) %>%
@@ -176,8 +174,6 @@ load_data_from_url <- function(listings_url){
 df_clean <- all_urls %>%
     select(listings_data_url) %>%
     apply(1, function(x) load_data_from_url(x))
-
-df_clean <- data.frame(Reduce(rbind, df_clean))
 
 source('./Scripts/remove_na.R')
 
