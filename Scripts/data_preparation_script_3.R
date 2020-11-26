@@ -17,7 +17,7 @@ firstup <- function(word) {
 start_time <- Sys.time()
 # Number of last files we keep per countries (according to the date)
 NB_KEEP_DATES <- 3
-selected_countries <-  c("germany", "the-netherlands", "belgium","france", "spain", "italy")
+selected_countries <- c("france", "spain", "italy") #  c("germany", "the-netherlands", "belgium")
 
 file_path <- file.path("App", "all_data_urls.csv")
 all_urls <- read.csv(file = file_path)
@@ -175,7 +175,7 @@ df_clean <- all_urls %>%
     select(listings_data_url) %>%
     apply(1, function(x) load_data_from_url(x))
 
-source('./Scripts/remove_na.R')
+# source('./Scripts/remove_na.R')
 
 end_time <- Sys.time()
 

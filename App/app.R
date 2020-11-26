@@ -3,6 +3,10 @@ library(shinythemes)
 library(ggplot2)
 library(leaflet)
 library(htmltools)
+library(DT)
+library(plotly)
+library(rsconnect)
+
 
 setwd('../')
 
@@ -65,8 +69,8 @@ ui <- fluidPage(
                          width = 3
                      ),
                      mainPanel(
-                         plotOutput("plot1"),
-                         tableOutput('table1'),
+                         plotOutput("plot1"),br(),br(),
+                         dataTableOutput('table1'),
                          width = 9
                      )
                  )
@@ -116,8 +120,8 @@ ui <- fluidPage(
                          
                     ),
                     mainPanel(
-                        plotOutput("plot2"),
-                        tableOutput('table2'),
+                        plotlyOutput("plot2"),br(),br(),
+                        dataTableOutput('table2'),
                         width = 9
                     )
                 ),
@@ -176,13 +180,15 @@ server <- function(input, output) {
 # ******************************************************************************************
     df_filtered1 <- reactive({
         req(input$cities1)
-        df <- load_data(input$cities1, input$dates1[1], input$dates1[2])
+        df <- load_data(input$cities1, input$dates1[1], input$dates1[2]) 
         return(df)
     })
     
     output$plot1 <- renderPlot({
         
         df_plot <- df_filtered1()
+        df_plot <- df_plot %>% filter( !is.na(df_plot[input$feature1]) & (!is.na(df_plot[input$dimension1])  ) )
+
         
         if (input$dimension1 == 'neighbourhood_cleansed') {
             top_10_neighborhood <- df_plot %>%
@@ -193,17 +199,16 @@ server <- function(input, output) {
             
             df_plot <- df_plot %>% 
                 filter(neighbourhood_cleansed %in% top_10_neighborhood$neighbourhood_cleansed ) 
-            
-            df_plot <- factor(df_plot$neighbourhood_cleansed, levels = df_plot$neighbourhood_cleansed[sort(unique(df_plot[input$feature1]))])
-            
-            
         }  
-        
+        coeff <- 1
+        if(input$feature1 == 'availability_30') coeff <- 0.04
+        else if(input$feature1 == 'price_30') coeff <- 0.5
+        else if(input$feature1 == 'revenue_30') coeff <- 1
         if (input$choicePlot1 == 'boxplot') {
             ggplot(df_plot, aes_string(input$dimension1, input$feature1, fill='city')) +
                 geom_boxplot( outlier.shape = NA) +
-                scale_y_continuous(limits = quantile(df_plot[input$feature1], c(0.1, 0.9), na.rm = T)) +
-                scale_fill_brewer(palette="Set1") + theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
+                scale_y_continuous(limits = quantile(df_plot[input$feature1], c(0.1, 0.9), na.rm = T)) + 
+                theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1)) 
         }
         else if (input$choicePlot1 == 'histogram') {
             ggplot(df_plot, aes_string(x = input$dimension1, y = input$feature1, fill='city')) +
@@ -211,7 +216,7 @@ server <- function(input, output) {
         }
         else if (input$choicePlot1 == 'density') {
             ggplot(df_plot[!is.na(df_plot[input$feature1]),], aes_string(input$feature1, fill = 'city')) +
-                geom_density(alpha = 0.4) + ylab("density")
+                geom_density(alpha = 0.4) + ylab("density") + xlim(0,1000*coeff)
         }
         else if (input$choicePlot1 == 'proportion'){
             ggplot(df_plot, aes_string(x = input$dimension1, fill= 'city')) +
@@ -223,27 +228,30 @@ server <- function(input, output) {
     })
 
 
-    output$table1 <- renderTable({
+    output$table1 <- renderDataTable({
+        opt = list(pageLength = 5, searching = F)
         
         df_table <- df_filtered1() 
-        
-        df_table <- df_table %>% filter( !is.na(df_table[input$dimension1]) )
+        df_table <- df_table %>% filter( !is.na(df_table[input$feature1]) & (!is.na(df_table[input$dimension1]) ) )
         
         if (input$average1 & !input$median1) {
             df_table %>%
                 group_by(city) %>%
-                summarise(average = mean(!!rlang::sym(input$feature1)))
+                summarise(average = mean(!!rlang::sym(input$feature1))) %>%
+                DT::datatable(options = opt)
         }
         else if  (!input$average1 & input$median1) {
             df_table %>%
                 group_by(city) %>%
-                summarise(median = median(!!rlang::sym(input$feature1)))
+                summarise(median = median(!!rlang::sym(input$feature1)))%>%
+                DT::datatable(options = opt)
         }
         else if (input$average1 & input$median1) {
             df_table %>%
                 group_by(city) %>%
                 summarise(average = mean(!!rlang::sym(input$feature1)),
-                          median = median(!!rlang::sym(input$feature1)))
+                          median = median(!!rlang::sym(input$feature1)))%>%
+                DT::datatable(options = opt)
         }
     })
 
@@ -252,13 +260,15 @@ server <- function(input, output) {
     # ******************************************************************************************
     
     df_filtered2 <- reactive({
-        df <- load_data(input$cities2, input$dates2[1], input$dates2[2] )
+        df <- load_data(input$cities2, input$dates2[1], input$dates2[2] ) 
         return(df)
     })
     
-    output$plot2 <- renderPlot({
+    output$plot2 <- renderPlotly({
         
-        df_plot <- df_filtered2()
+        df_plot <- df_filtered2() 
+        df_plot <- df_plot %>% filter( !is.na(df_plot[input$feature2]) & (!is.na(df_plot[input$dimension2]) ) )
+
         
         if (input$dimension2 == 'neighbourhood_cleansed') {
             top_10_neighborhood <- df_plot %>%
@@ -271,22 +281,23 @@ server <- function(input, output) {
                 filter(neighbourhood_cleansed %in% top_10_neighborhood$neighbourhood_cleansed ) 
             
         }  
-            
+        coeff <- 1
+        if(input$feature2 == 'availability_30') coeff <- 0.04
+        else if(input$feature2 == 'price_30') coeff <- 0.5
+        else if(input$feature2 == 'revenue_30') coeff <- 1
         if (input$choicePlot2 == 'boxplot') {
             ggplot(df_plot, aes_string(input$dimension2, input$feature2, fill='city')) +
                 geom_boxplot( outlier.shape = NA) +
                 scale_y_continuous(limits = quantile(df_plot[input$feature2], c(0.1, 0.9), na.rm = T)) +
-                scale_fill_brewer(palette="Set1") + theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
+                theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
         }
         else if (input$choicePlot2 == 'histogram') {
             ggplot(df_plot, aes_string(x = input$dimension2, y = input$feature2, fill='city')) +
-                geom_bar(stat='identity') +
-                ylab(input$feature2) + coord_flip()
+                geom_bar(stat='identity') + ylab(input$feature2) + coord_flip()
         }
         else if (input$choicePlot2 == 'density') {
             ggplot(df_plot[!is.na(df_plot[input$feature2]),], aes_string(input$feature2, fill = 'city')) +
-                geom_density(alpha = 0.4) +
-                ylab("density")
+                geom_density(alpha = 0.4) + ylab("density") + xlim(0,1000*coeff)
         }
         else if (input$choicePlot2 == 'proportion'){
             ggplot(df_plot, aes_string(x = input$dimension2, fill= 'city')) +
@@ -299,28 +310,30 @@ server <- function(input, output) {
     })
     
     
-    output$table2 <- renderTable({
+    output$table2 <- renderDataTable({
+        opt = list(pageLength = 5, searching = F)
         
-        
-        df_table <- df_filtered2
-        
-        df_table <- df_table %>% filter( !is.na(df_table[input$dimension2]) )
+        df_table <- df_filtered2()
+        df_table <- df_table %>% filter( !is.na(df_table[input$feature2]) & (!is.na(df_table[input$dimension2]) ) )
         
         if (input$average2 & !input$median2) {
             df_table %>%
                 group_by(city, !!rlang::sym(input$dimension2)) %>%
-                summarise(average = mean(!!rlang::sym(input$feature2)))
+                summarise(average = mean(!!rlang::sym(input$feature2)))%>%
+                DT::datatable(options = opt)
         }
         else if  (!input$average2 & input$median2) {
             df_table %>%
                 group_by(city, !!rlang::sym(input$dimension2)) %>%
-                summarise(median = median(!!rlang::sym(input$feature2)))
+                summarise(median = median(!!rlang::sym(input$feature2)))%>%
+                DT::datatable(options = opt)
         }
         else if (input$average2 & input$median2) {
             df_table %>%
                 group_by(city, !!rlang::sym(input$dimension2)) %>%
                 summarise(average = mean(!!rlang::sym(input$feature2)),
-                          median = median(!!rlang::sym(input$feature2)))
+                          median = median(!!rlang::sym(input$feature2)))%>%
+                DT::datatable(options = opt)
         }
     })
     

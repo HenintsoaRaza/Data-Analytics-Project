@@ -44,7 +44,8 @@ load_data <- function(cities, start_date=-1, end_date=-1){
     }
     df$bedrooms <- ifelse(df$bedrooms >= 5, "5+", df$bedrooms)
     df$beds <- ifelse(df$beds >= 5, "5+", df$beds)
-    df$accommodates <- ifelse(df$accommodates >= 10, "10+", df$accommodates)
+    df$accommodates <- ifelse(as.numeric(df$accommodates) >= 10, "10+", df$accommodates)
+    df$accommodates <- ifelse(is.na(df$accommodates) | df$accommodates=='NA', "10+", df$accommodates)
     return(df)
   }
   else return(NULL)
