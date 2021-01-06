@@ -41,26 +41,15 @@ df <- load_data()
 ```
 
 ## Summary
-<ul>
-  <li>Data</li>
-  <li>Preprocessing</li>
-  <li>App</li>
-  <ul>
-    <li>Documentation</li>
-    <li>Compare cities
-      <ul>
-        <li>Comparisons between cities</li>
-      </ul>
-    </li>
-    <li>Deep dive into a city
-      <ul>
-        <li>Finer grained analysis</li>
-        <li>Map</li>
-      </ul>
-    </li>
-   </ul> 
-</ul>
-</div>
+
+1. Data
+2. Preprocessing
+3. App
+    1. Documentation
+    2. Compare cities
+    3. Deep dive into a city
+        - Finer grained analysis
+        - Map
 
 ## Data
 <!-- Quick view of the Data -->
@@ -74,25 +63,76 @@ df %>%
 <!-- parler du fait qu'on a reuse le meme script qu'avant  -->
 <!-- expliquer comment ta géré les colonnes manquantes !  -->
 <!-- cad création des colonnes commandes en mettant des NA -->
-<div align="center">
-![](screen/code1.png){width=800px height=500px}
-</div>
+```{r echo=TRUE, eval=FALSE}
+NB_KEEP_DATES <- 3
+selected_countries <- c("france", "spain", "italy") #  c("germany", "the-netherlands", "belgium")
+
+file_path <- file.path("App", "all_data_urls.csv")
+all_urls <- read.csv(file = file_path)
+
+all_urls <- all_urls %>%
+    mutate(country = str_split_fixed(listings_data_url, '/', n=10)[,4],
+           city = str_split_fixed(listings_data_url, '/', n=10)[,6],
+           data_date = str_split_fixed(listings_data_url, '/', n=10)[,7]
+    ) %>%
+    filter(country %in% selected_countries) %>%
+    group_by(city) %>%
+    top_n(n = NB_KEEP_DATES, wt = data_date) %>%
+    ungroup() %>%
+    as.data.frame() 
+
+```
 
 ## Preprocessing
 <!-- parler du fait qu'on a reuse le meme script qu'avant  -->
 <!-- expliquer comment ta géré les colonnes manquantes !  -->
 <!-- cad création des colonnes commandes en mettant des NA -->
-<div align="center">
-![](screen/code2.png){width=600px height=500px}
-</div>
+```{r echo=TRUE, eval=FALSE, size='small'}
+## If there is no missing columns ...
+if( length(missing_columns)==0 ){ ## Same preprocessing script as the one provided
+                                       }
+    # If there are some missing columns ...
+    else { 
+        ## add day number (starting first day)
+        df_cal <- df_cal %>%
+            group_by(listing_id) %>%
+            arrange(date) %>%
+            mutate(day_nb = row_number()) %>%
+            ungroup() %>%
+            
+            ## change available column to binary
+            mutate(available = ifelse(available=="t", 1, 0)) %>%
+            
+            ## clean price column and transform to numeric
+            ##...
+            ## calculate availability, price, revenue for next 30 for each listing_id
+            ##...
+        
+        df <- df_list %>% 
+            select(-availability_30) %>%
+            mutate(id = strtoi(id)) %>% 
+            left_join(df_cal, by = "id" )
+        df$bedrooms <- NA
+        df$beds <- NA
+        
+
+```
 
 ## Preprocessing
 <!-- parler du fait qu'on a reuse le meme script qu'avant  -->
 <!-- expliquer comment ta géré les colonnes manquantes !  -->
 <!-- cad création des colonnes commandes en mettant des NA -->
-<div align="center">
-![](screen/code3.png){width=500px height=200px}
-</div>
+```{r echo=TRUE, eval=FALSE}
+
+
+df_clean <- all_urls %>%
+    select(listings_data_url) %>%
+    apply(1, function(x) load_data_from_url(x))
+
+source('./Scripts/remove_na.R')
+
+
+```
 
 ## Documentation 
 <div align="center">
